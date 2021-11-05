@@ -50,6 +50,8 @@ test:
 #
 production:
   <<: *default
-  database: pbl_server_production
-  username: pbl_server
-  password: <%= ENV['PBL_SERVER_DATABASE_PASSWORD'] %>
+  port: <%= ENV['DB_PORT'] %>
+  database: <%= ENV['DB_NAME'] %>
+  hostname: <%= ENV['DB_HOST'] %>
+  username: <%= ENV['DB_USER'] %>
+  password: <%= ENV['DB_PASSWORD'] %>

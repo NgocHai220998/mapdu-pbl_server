@@ -1,0 +1,15 @@
+validations:
+  user:
+    password:
+      minimum: 6
+      maximum: 25
+    email:
+      minimum: 10
+      maximum: 100
+errors:
+  something_went_wrong: SOMETHING_WENT_WRONG
+  user:
+    email_was_registered: EMAIL_WAS_REGISTERED
+    email_not_registered: EMAIL_NOT_REGISTERED
+    invalid_password: INVALID_PASSWORD
+    not_authenticated: NOT_AUTHENTICATED
