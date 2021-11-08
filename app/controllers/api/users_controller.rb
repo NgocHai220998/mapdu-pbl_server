@@ -5,7 +5,7 @@ class Api::UsersController < ApplicationController
     user = find_user params[:id]
 
     if user.blank?
-      render json: format_response_error(message: Settings.errors.user.email_not_registered), status: :not_found
+      render json: format_response_error(message: Settings.errors.user.email_not_registered), status: :ok
     else
       user = ActiveModelSerializers::SerializableResource.new(user, {})
       render json: format_response(user: user), status: :ok

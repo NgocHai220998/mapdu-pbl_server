@@ -18,7 +18,7 @@ class AuthenticationController < ApplicationController
 
     {
       auth_token: JsonWebToken.encode(user_id: user.id),
-      user: {id: user.id, email: user.email}
+      user: {id: user.id, email: user.email, full_name: user.full_name}
     }
   end
 end
