@@ -18,9 +18,9 @@ class Api::UsersController < ApplicationController
     if user.save
       render json: format_response(ActiveModelSerializers::SerializableResource.new(user, {}))
     elsif User.find_by(email: user_params[:email]).present?
-      render json: format_response_error(message: Settings.errors.user.email_was_registered), status: :bad_request
+      render json: format_response_error(message: Settings.errors.user.email_was_registered), status: :ok
     else
-      render json: format_response_error(user.errors.messages), status: :bad_request
+      render json: format_response_error(user.errors.messages), status: :ok
     end
   end
 
