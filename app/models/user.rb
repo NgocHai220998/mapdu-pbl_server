@@ -4,7 +4,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  USERS_PARAMS = %i(email password password_confirmation).freeze
+  USERS_PARAMS = %i(email password password_confirmation full_name).freeze
 
   validates :email, presence: true,
     length: {minimum: Settings.validations.user.email.minimum,
