@@ -1,6 +1,6 @@
 class Api::WorkSpacesController < ApplicationController
-  before_action :set_work_space, only: [:show, :update, :destroy]
   before_action :authenticate_request!
+  before_action :set_work_space, only: [:show, :update, :destroy]
 
   # GET /work_spaces
   def index
@@ -9,9 +9,13 @@ class Api::WorkSpacesController < ApplicationController
     render json: @work_spaces
   end
 
-  # GET /work_spaces/1
   def show
-    render json: @work_space
+    if @work_space.blank?
+      render json: format_response_error(message: Settings.errors.work_space.work_space_not_found), status: :ok
+    else
+      work_space = ActiveModelSerializers::SerializableResource.new(@work_space, {})
+      render json: format_response(work_space: work_space), status: :ok
+    end
   end
 
   def create
@@ -39,11 +43,11 @@ class Api::WorkSpacesController < ApplicationController
   end
 
   private
-    def set_work_space
-      @work_space = WorkSpace.find(params[:id])
-    end
+  def set_work_space
+    @work_space = @current_user.work_spaces.find_by(id: params[:id])
+  end
 
-    def work_space_params
-      params.require(:work_space).permit WorkSpace::WORK_SPACE_PARAMS
-    end
+  def work_space_params
+    params.require(:work_space).permit WorkSpace::WORK_SPACE_PARAMS
+  end
 end

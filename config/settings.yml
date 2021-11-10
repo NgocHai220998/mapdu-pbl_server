@@ -19,3 +19,6 @@ errors:
     email_not_registered: EMAIL_NOT_REGISTERED
     invalid_password: INVALID_PASSWORD
     not_authenticated: NOT_AUTHENTICATED
+  work_space:
+    work_space_not_found: WORK_SPACE_NOT_FOUND
+      
