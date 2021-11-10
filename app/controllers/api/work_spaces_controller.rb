@@ -1,5 +1,6 @@
 class Api::WorkSpacesController < ApplicationController
   before_action :set_work_space, only: [:show, :update, :destroy]
+  before_action :authenticate_request!
 
   # GET /work_spaces
   def index
@@ -13,14 +14,13 @@ class Api::WorkSpacesController < ApplicationController
     render json: @work_space
   end
 
-  # POST /work_spaces
   def create
-    @work_space = WorkSpace.new(work_space_params)
+    work_space = @current_user.work_spaces.new(work_space_params)
 
-    if @work_space.save
-      render json: @work_space, status: :created, location: @work_space
+    if work_space.save
+      render json: format_response(ActiveModelSerializers::SerializableResource.new(work_space, {})), status: :created
     else
-      render json: @work_space.errors, status: :unprocessable_entity
+      render json: format_response_error(work_space.errors.messages), status: :ok
     end
   end
 
@@ -39,13 +39,11 @@ class Api::WorkSpacesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_work_space
       @work_space = WorkSpace.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def work_space_params
-      params.require(:work_space).permit(:user_id, :name, :description)
+      params.require(:work_space).permit WorkSpace::WORK_SPACE_PARAMS
     end
 end
