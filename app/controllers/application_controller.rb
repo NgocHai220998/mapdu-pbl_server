@@ -2,6 +2,7 @@ class ApplicationController < ActionController::API
   attr_reader :current_user
 
   include ResponseHelper
+  include PaginateHelper
 
   protected
   def authenticate_request!

@@ -6,6 +6,8 @@ validations:
     email:
       minimum: 10
       maximum: 100
+pagination:
+  default_per_page: 10
 errors:
   something_went_wrong: SOMETHING_WENT_WRONG
   user:

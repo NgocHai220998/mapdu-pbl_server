@@ -3,7 +3,7 @@ class Api::WorkSpacesController < ApplicationController
 
   # GET /work_spaces
   def index
-    @work_spaces = WorkSpace.all
+    @work_spaces = paginate WorkSpace.all
 
     render json: @work_spaces
   end
