@@ -10,12 +10,9 @@ class Api::WorkSpacesController < ApplicationController
   end
 
   def show
-    if @work_space.blank?
-      render json: format_response_error(message: Settings.errors.work_space.work_space_not_found), status: :ok
-    else
-      work_space = ActiveModelSerializers::SerializableResource.new(@work_space, {})
-      render json: format_response(work_space: work_space), status: :ok
-    end
+    @work_space = ActiveModelSerializers::SerializableResource.new(@work_space, {})
+
+    render json: format_response(work_space: @work_space), status: :ok
   end
 
   def create
@@ -37,18 +34,16 @@ class Api::WorkSpacesController < ApplicationController
   end
 
   def destroy
-    if @work_space
-      @work_space.destroy
+    @work_space.destroy
 
-      render json: format_response(ActiveModelSerializers::SerializableResource.new(@work_space, {})), status: :ok
-    else
-      render json: format_response_error(message: Settings.errors.work_space.work_space_not_found), status: :ok
-    end
+    render json: format_response(ActiveModelSerializers::SerializableResource.new(@work_space, {})), status: :ok
   end
 
   private
   def set_work_space
     @work_space = @current_user.work_spaces.find_by(id: params[:id])
+
+    render json: format_response_error(message: Settings.errors.work_space.work_space_not_found), status: :ok if @work_space.nil?
   end
 
   def work_space_params
