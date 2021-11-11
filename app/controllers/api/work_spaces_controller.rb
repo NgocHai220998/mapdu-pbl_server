@@ -37,9 +37,14 @@ class Api::WorkSpacesController < ApplicationController
     end
   end
 
-  # DELETE /work_spaces/1
   def destroy
-    @work_space.destroy
+    if @work_space
+      @work_space.destroy
+
+      render json: format_response(ActiveModelSerializers::SerializableResource.new(@work_space, {})), status: :ok
+    else
+      render json: format_response_error(message: Settings.errors.work_space.work_space_not_found), status: :ok
+    end
   end
 
   private
