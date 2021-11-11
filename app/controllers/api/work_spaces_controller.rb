@@ -2,11 +2,11 @@ class Api::WorkSpacesController < ApplicationController
   before_action :authenticate_request!
   before_action :set_work_space, only: [:show, :update, :destroy]
 
-  # GET /work_spaces
   def index
-    @work_spaces = paginate WorkSpace.all
+    work_spaces = paginate @current_user.work_spaces
 
-    render json: @work_spaces
+    work_spaces = ActiveModelSerializers::SerializableResource.new(work_spaces, {})
+    render json: format_response(work_spaces: work_spaces), status: :ok
   end
 
   def show
