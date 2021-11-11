@@ -28,12 +28,11 @@ class Api::WorkSpacesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /work_spaces/1
   def update
     if @work_space.update(work_space_params)
-      render json: @work_space
+      render json: format_response(ActiveModelSerializers::SerializableResource.new(@work_space, {})), status: :ok
     else
-      render json: @work_space.errors, status: :unprocessable_entity
+      render json: format_response_error(@work_space.errors.messages), status: :ok
     end
   end
 
