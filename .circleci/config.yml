@@ -19,7 +19,11 @@ jobs:
       - run:
           name: check version
           command: |
-            ruby --version & rails --version & ls
+            rails --version
+      - run:
+          name: run rubocop
+          command: |
+            bundle exec rubocop
 workflows:
   deploy:
     jobs:
