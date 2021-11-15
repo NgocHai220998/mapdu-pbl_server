@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   namespace :api do
     resources :users, only: [:show, :create]
     resources :todos
-    resources :work_spaces
+    resources :work_spaces, except: [:index]
+    get 'work_spaces(/:page/:per_page)' => 'work_spaces#index'
   end
 end
