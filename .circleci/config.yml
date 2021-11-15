@@ -1,19 +1,40 @@
 version: 2.1
+orbs:
+  node: circleci/node@3.0.0
+  docker: circleci/docker@1.4.0
 
 jobs:
   build-and-push:
     environment:
-      DOCKER_IMAGE: circleci/ruby:2.7.4-node-browsers
+      DOCKER_IMAGE: 0383325403/deploy
       DOCKER_TAG: latest
+      SSH_KEY_FINGERPRINT: a9:42:c0:a9:e9:dd:7b:76:e0:a0:9b:2e:21:c9:4e:cb
     executor: docker/docker
     steps:
       - setup_remote_docker:
-          version: 20.10.10
+          version: 19.03.13
           docker_layer_caching: true
       - checkout
+      - docker/check:
+          docker-username: DOCKER_USER
+          docker-password: DOCKER_PASSWORD
       - docker/build:
           image: $DOCKER_IMAGE
           tag: $DOCKER_TAG
+      - docker/push:
+          digest-path: /tmp/digest.txt
+          image: $DOCKER_IMAGE
+          tag: $DOCKER_TAG
+      - run:
+          command: |
+            echo "Digest is: $(</tmp/digest.txt)"
+  deploy:
+    executor: docker/docker
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - $SSH_KEY_FINGERPRINT
+      - run: ssh -oStrictHostKeyChecking=no apps@3.15.225.166 './deploy-CI-CD/deploy.sh'
 
 workflows:
   deploy:
@@ -22,4 +43,11 @@ workflows:
           filters:
             branches:
               only:
-                - test/ci
+                - main
+      - deploy:
+          requires:
+            - build-and-push
+          filters:
+            branches:
+              only:
+                - main
