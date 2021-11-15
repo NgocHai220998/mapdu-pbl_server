@@ -18,6 +18,9 @@ jobs:
             gem install rails
       - run:
           command: |
+            bundle install
+      - run:
+          command: |
             bundle exec rubocop
 
 workflows:
@@ -27,4 +30,4 @@ workflows:
           filters:
             branches:
               only:
-                - develop
+                - test/ci
