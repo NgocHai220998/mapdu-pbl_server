@@ -13,16 +13,9 @@ jobs:
           version: 19.03.13
           docker_layer_caching: true
       - checkout
-      - docker/build:
-          image: $DOCKER_IMAGE
-          tag: $DOCKER_TAG
-      - docker/push:
-          digest-path: /tmp/digest.txt
-          image: $DOCKER_IMAGE
-          tag: $DOCKER_TAG
       - run:
           command: |
-            echo "Digest is: $(</tmp/digest.txt)"
+            ruby --version & ls
 
 workflows:
   deploy:
