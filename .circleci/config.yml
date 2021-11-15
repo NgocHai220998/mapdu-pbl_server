@@ -43,11 +43,11 @@ workflows:
           filters:
             branches:
               only:
-                - main
+                - test/ci
       - deploy:
           requires:
             - build-and-push
           filters:
             branches:
               only:
-                - main
+                - test/ci
