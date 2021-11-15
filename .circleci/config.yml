@@ -1,17 +1,9 @@
 version: 2.1
-orbs:
-  docker: circleci/docker@1.4.0
 
 jobs:
-  build-and-push:
-    environment:
-      DOCKER_IMAGE: circleci/ruby:2.7.4-node-browsers
-      DOCKER_TAG: latest
-    executor: docker/docker
-    steps:
-      - setup_remote_docker:
-          version: 19.03.13
-          docker_layer_caching: true
+  build:
+    docker:
+      - image: circleci/ruby:2.7.4-node-browsers
       - checkout
       - run:
           command: |
