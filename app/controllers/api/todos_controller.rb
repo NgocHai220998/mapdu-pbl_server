@@ -41,6 +41,8 @@ class Api::TodosController < ApplicationController
   # DELETE /todos/1
   def destroy
     @todo.destroy
+
+    render json: format_response(ActiveModelSerializers::SerializableResource.new(@todo, {})), status: :ok
   end
 
   private
