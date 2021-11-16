@@ -4,12 +4,12 @@ class AuthenticationController < ApplicationController
   def authenticate_user
     user = User.find_for_database_authentication email: params[:email]
 
-    handle_check_user(user)
+    handle_check_user user
   end
 
   private
 
-  def payload(user)
+  def payload user
     return nil unless user&.id
 
     {
