@@ -1,0 +1,32 @@
+require:
+  - rubocop-rails
+  - rubocop-rspec
+
+# Common configuration.
+AllCops:
+  TargetRubyVersion: 2.5
+  NewCops: enable
+  # Include gemspec and Rakefile
+  Include:
+    - "app/**/*"
+    - "lib/**/*"
+    - "*/.gemspec"
+    - "Gemfile"
+  Exclude:
+    - "vendor/**/*"
+    - "bin/*"
+    - "db/**/*"
+    - "spec/**/*"
+    - "config/**/*"
+    - ".idea/**/*"
+    - "**/.DS_Store"
+    - "**/.keep"
+
+Style/Documentation:
+  Enabled: false
+
+Metrics/BlockLength:
+  Exclude:
+    - 'Rakefile'
+    - '*/.rake'
+    - 'spec/**/*.rb'

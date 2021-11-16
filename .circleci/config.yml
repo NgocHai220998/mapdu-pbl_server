@@ -1,0 +1,30 @@
+version: 2.1
+
+jobs:
+  rubocop:
+    docker:
+      - image: circleci/ruby:2.7.4-node-browsers
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+      - run:
+          name: check directory
+          command: |
+            pwd
+      - run:
+          name: install dependencies
+          command: |
+            bundle install
+      - run:
+          name: run rubocop
+          command: |
+            bundle exec rubocop
+workflows:
+  push:
+    jobs:
+      - rubocop:
+          filters:
+            branches:
+              only:
+                - /.*/
