@@ -8,10 +8,10 @@ jobs:
 
     steps:
       - checkout
-      - run:
-          name: install rails
-          command: |
-            gem install rails
+      # - run:
+      #     name: install rails
+      #     command: |
+      #       gem install rails
       - run:
           name: install dependencies
           command: |
