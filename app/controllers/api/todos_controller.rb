@@ -1,20 +1,21 @@
 # frozen_string_literal: true
 class Api::TodosController < ApplicationController
   before_action :authenticate_request!
-  before_action :set_work_space, only: [:create]
+  before_action :set_work_space, only: [:create, :index]
   before_action :set_todo, only: [:show, :update, :destroy]
+
   # GET /todos
   def index
-    @todos = Todo.all
+    todos = @work_space.todos.by_recently_created
 
-    render json: @todos
+    todos = ActiveModelSerializers::SerializableResource.new(todos, {})
+    render json: format_response(todos: todos), status: :ok
   end
 
   # GET /todos/1
   def show
     render json: @todo
   end
-
 
   # POST /todos
   def create
