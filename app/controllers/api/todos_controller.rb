@@ -12,9 +12,10 @@ class Api::TodosController < ApplicationController
     render json: format_response(todos: todos), status: :ok
   end
 
-  # GET /todos/1
   def show
-    render json: @todo
+    todo = ActiveModelSerializers::SerializableResource.new(@todo, {})
+
+    render json: format_response(todo: todo), status: :ok
   end
 
   # POST /todos
@@ -44,7 +45,9 @@ class Api::TodosController < ApplicationController
 
   private
   def set_todo
-    @todo = Todo.find(params[:id])
+    @todo = Todo.find_by(id: params[:id])
+
+    render json: format_response_error(message: Settings.errors.todo.not_found) if @todo.nil?
   end
 
   def set_work_space
