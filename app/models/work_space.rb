@@ -2,6 +2,7 @@
 
 class WorkSpace < ApplicationRecord
   belongs_to :user
+  has_many :todos, dependent: :destroy
 
   WORK_SPACE_PARAMS = %i[name description].freeze
 
