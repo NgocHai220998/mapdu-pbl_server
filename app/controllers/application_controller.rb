@@ -19,7 +19,7 @@ class ApplicationController < ActionController::API
     render json: format_response_error(message: Settings.errors.user.not_authenticated), status: :unauthorized
   end
 
-  def find_user(user_id)
+  def find_user user_id
     user = User.find_by id: user_id
     return user if user&.id
 
