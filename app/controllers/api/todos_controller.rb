@@ -32,9 +32,9 @@ class Api::TodosController < ApplicationController
   # PATCH/PUT /todos/1
   def update
     if @todo.update(todo_params)
-      render json: @todo
+      render json: format_response(ActiveModelSerializers::SerializableResource.new(@todo, {})), status: :ok
     else
-      render json: @todo.errors, status: :unprocessable_entity
+      render json: format_response_error(@todo.errors.messages), status: :ok
     end
   end
 
