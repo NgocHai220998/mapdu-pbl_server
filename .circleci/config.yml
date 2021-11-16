@@ -1,5 +1,10 @@
 version: 2.1
 
+parameters:
+  pull_request:
+    type: boolean
+    default: false
+
 jobs:
   build:
     docker:
@@ -21,7 +26,8 @@ jobs:
           command: |
             bundle exec rubocop
 workflows:
-  deploy:
+  push:
+    when: << pipeline.parameters.pull_request >>
     jobs:
       - build:
           filters:
