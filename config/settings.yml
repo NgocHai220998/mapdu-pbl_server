@@ -10,6 +10,14 @@ validations:
     name:
       minimum: 4
       maximum: 100
+  todo:
+    title:
+      minimum: 4
+      maximum: 100
+enum:
+  todo:
+    status: ["TODO", "DOING", "DONE"]
+    priority: ["LOW", "NORMAL", "HIGHT"]
 pagination:
   default_per_page: 10
 errors:
@@ -21,4 +29,6 @@ errors:
     not_authenticated: NOT_AUTHENTICATED
   work_space:
     work_space_not_found: WORK_SPACE_NOT_FOUND
+  todo:
+    not_found: TODO_NOT_FOUND
       

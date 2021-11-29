@@ -2,55 +2,63 @@
 
 module Api
   class TodosController < ApplicationController
+    before_action :authenticate_request!
+    before_action :set_work_space, only: %i[create index]
     before_action :set_todo, only: %i[show update destroy]
 
-    # GET /todos
     def index
-      @todos = Todo.all
+      todos = @work_space.todos.by_recently_created
 
-      render json: @todos
+      todos = ActiveModelSerializers::SerializableResource.new(todos, {})
+      render json: format_response(todos: todos), status: :ok
     end
 
-    # GET /todos/1
     def show
-      render json: @todo
+      todo = ActiveModelSerializers::SerializableResource.new(@todo, {})
+
+      render json: format_response(todo: todo), status: :ok
     end
 
-    # POST /todos
     def create
-      @todo = Todo.new(todo_params)
+      todo = @work_space.todos.new(todo_params)
 
-      if @todo.save
-        render json: @todo, status: :created, location: @todo
+      if todo.save
+        render json: format_response(ActiveModelSerializers::SerializableResource.new(todo, {})), status: :created
       else
-        render json: @todo.errors, status: :unprocessable_entity
+        render json: format_response_error(todo.errors.messages), status: :ok
       end
     end
 
-    # PATCH/PUT /todos/1
     def update
       if @todo.update(todo_params)
-        render json: @todo
+        render json: format_response(ActiveModelSerializers::SerializableResource.new(@todo, {})), status: :ok
       else
-        render json: @todo.errors, status: :unprocessable_entity
+        render json: format_response_error(@todo.errors.messages), status: :ok
       end
     end
 
-    # DELETE /todos/1
     def destroy
       @todo.destroy
+
+      render json: format_response(ActiveModelSerializers::SerializableResource.new(@todo, {})), status: :ok
     end
 
     private
 
-    # Use callbacks to share common setup or constraints between actions.
     def set_todo
-      @todo = Todo.find(params[:id])
+      @todo = @current_user.todos.find_by(id: params[:id])
+
+      render json: format_response_error(message: Settings.errors.todo.not_found) if @todo.nil?
     end
 
-    # Only allow a list of trusted parameters through.
+    def set_work_space
+      @work_space = @current_user.work_spaces.find_by(id: params[:work_space_id])
+
+      render json: format_response_error(message: Settings.errors.work_space.work_space_not_found) if @work_space.nil?
+    end
+
     def todo_params
-      params.require(:todo).permit(:work_space_id, :title, :description, :priority, :status)
+      params.require(:todo).permit Todo::TODO_PARAMS
     end
   end
 end
