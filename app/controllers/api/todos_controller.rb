@@ -46,9 +46,7 @@ module Api
     private
 
     def set_todo
-      set_work_space
-
-      @todo = @work_space.todos.find_by(id: params[:id])
+      @todo = @current_user.todos.find_by(id: params[:id])
 
       render json: format_response_error(message: Settings.errors.todo.not_found) if @todo.nil?
     end
