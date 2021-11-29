@@ -40,6 +40,10 @@ group :development, :test do
   gem 'rubocop', require: false
   gem 'rubocop-rails', require: false
   gem 'rubocop-rspec', require: false
+  gem 'shoulda-matchers', '~> 3.0', require: false
+  gem 'database_cleaner', '~> 1.5'
+  gem "rspec-rails", "~> 3.4"
+  gem "faker"
 end
 
 group :development do
