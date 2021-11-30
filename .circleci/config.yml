@@ -20,6 +20,10 @@ jobs:
           name: run rubocop
           command: |
             bundle exec rubocop
+      - run:
+          name: Run unit test rspec
+          command: |
+            bundle exec rspec
 workflows:
   push:
     jobs:
