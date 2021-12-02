@@ -1,20 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  user = FactoryBot.create(:user)
-
   describe User do
     it "is valid with valid attributes" do
+      user = FactoryBot.create(:user)
       expect(user).to be_valid
     end
 
     it "is not valid without a email" do
-      user.email = Faker::Internet.name # Not a email
-      expect(user).to_not be_valid
-    end
-
-    it "is not valid without a name" do
-      user.full_name = 220998 # Not s string
+      user = FactoryBot.create(:user)
+      user.email = "is.string" # Not a email
       expect(user).to_not be_valid
     end
 

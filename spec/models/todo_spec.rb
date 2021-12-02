@@ -7,15 +7,18 @@ RSpec.describe WorkSpace, type: :model do
 
   describe User do
     it "todo is valid with valid attributes" do
+      todo = FactoryBot.create(:todo, work_space_id: work_space.id)
       expect(todo).to be_valid
     end
 
     it "title is not valid without a string" do
+      todo = FactoryBot.create(:todo, work_space_id: work_space.id)
       todo.title = nil
       expect(todo).to_not be_valid
     end
 
     it "is not valid work_space" do
+      todo = FactoryBot.create(:todo, work_space_id: work_space.id)
       todo.work_space_id = nil
       expect(todo).to_not be_valid
     end
